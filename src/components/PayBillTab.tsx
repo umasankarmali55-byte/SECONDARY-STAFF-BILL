@@ -179,36 +179,22 @@ export const PayBillTab: React.FC<PayBillTabProps> = ({
   return (
     <div className="space-y-4">
       {/* Controls Card */}
-      <div className="no-print bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-4">
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
+      <div className="no-print bg-white/95 dark:bg-slate-900/95 border border-indigo-200/80 dark:border-slate-800 rounded-xl shadow-xs p-4 space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+            <h1 className="text-lg font-display font-bold text-indigo-950 dark:text-indigo-100">
               {currentGroupName} Monthly Pay Bill
             </h1>
-            <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mt-1 tabular-nums">
-              <span>
-                Staff: <strong className="text-slate-900 dark:text-slate-100">{groupEmployeesWithIndex.length}</strong>
-              </span>
-              <span aria-hidden="true">·</span>
-              <span>
-                Gross: <strong className="text-slate-900 dark:text-slate-100">₹{formatIndianNumber(groupTotals.tot) || '0'}</strong>
-              </span>
-              <span aria-hidden="true">·</span>
-              <span>
-                Deductions: <strong className="text-slate-900 dark:text-slate-100">₹{formatIndianNumber(groupTotals.ded) || '0'}</strong>
-              </span>
-              <span aria-hidden="true">·</span>
-              <span>
-                Net Payable: <strong className="text-emerald-700 dark:text-emerald-400">₹{formatIndianNumber(passedNet) || '0'}</strong>
-              </span>
-            </div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              Edit staff salary, deductions, or click directly on any preview cell before printing.
+            </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
               onClick={onAddEmployee}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium rounded-md bg-blue-700 hover:bg-blue-800 text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-lg bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-xs transition-all whitespace-nowrap shrink-0 cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5" />
               Employee
@@ -223,7 +209,7 @@ export const PayBillTab: React.FC<PayBillTabProps> = ({
                   currentGroupName
                 )
               }
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-md border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg border border-teal-300 dark:border-teal-700 bg-teal-50/70 dark:bg-teal-950/40 text-teal-800 dark:text-teal-200 hover:bg-teal-100/80 dark:hover:bg-teal-900/50 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
             >
               <Download className="w-3.5 h-3.5" />
               Export CSV
@@ -237,14 +223,14 @@ export const PayBillTab: React.FC<PayBillTabProps> = ({
                     onResetSample();
                     setConfirmReset(false);
                   }}
-                  className="px-3 py-2 text-xs font-medium rounded-md bg-red-600 hover:bg-red-700 text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                  className="px-3 py-2 text-xs font-semibold rounded-lg bg-rose-600 hover:bg-rose-700 text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer"
                 >
                   Confirm Reset
                 </button>
                 <button
                   type="button"
                   onClick={() => setConfirmReset(false)}
-                  className="px-2.5 py-2 text-xs font-medium rounded-md border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                  className="px-2.5 py-2 text-xs font-medium rounded-lg border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -253,7 +239,7 @@ export const PayBillTab: React.FC<PayBillTabProps> = ({
               <button
                 type="button"
                 onClick={() => setConfirmReset(true)}
-                className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-md border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg border border-amber-300 dark:border-amber-800/70 bg-amber-50/70 dark:bg-amber-950/30 text-amber-800 dark:text-amber-300 hover:bg-amber-100/80 dark:hover:bg-amber-900/40 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 Reset Sample Data
@@ -263,7 +249,7 @@ export const PayBillTab: React.FC<PayBillTabProps> = ({
             <button
               type="button"
               onClick={onPrint}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium rounded-md bg-slate-900 dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-white text-white dark:text-slate-900 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-lg bg-gradient-to-r from-slate-900 to-indigo-950 dark:from-indigo-500 dark:to-blue-500 hover:from-slate-800 hover:to-indigo-900 text-white shadow-xs transition-all whitespace-nowrap shrink-0 cursor-pointer"
             >
               <Printer className="w-3.5 h-3.5" />
               Print (A4 Landscape)
@@ -271,13 +257,52 @@ export const PayBillTab: React.FC<PayBillTabProps> = ({
           </div>
         </div>
 
-        <div className="flex flex-wrap items-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
-          <label className="flex flex-col gap-1 text-xs font-medium text-slate-700 dark:text-slate-300">
+        {/* Colorful Semantic Payroll Summary Strip */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="rounded-lg bg-indigo-50/90 dark:bg-indigo-950/40 border border-indigo-200/70 dark:border-indigo-800/60 px-3.5 py-2.5">
+            <div className="text-xs font-medium text-indigo-700 dark:text-indigo-300">
+              Active Staff Count
+            </div>
+            <div className="text-lg font-bold tabular-nums text-indigo-950 dark:text-indigo-100 mt-0.5">
+              {groupEmployeesWithIndex.length}
+            </div>
+          </div>
+
+          <div className="rounded-lg bg-sky-50/90 dark:bg-sky-950/40 border border-sky-200/70 dark:border-sky-800/60 px-3.5 py-2.5">
+            <div className="text-xs font-medium text-sky-700 dark:text-sky-300">
+              Gross Earnings
+            </div>
+            <div className="text-lg font-bold tabular-nums text-sky-950 dark:text-sky-100 mt-0.5">
+              ₹{formatIndianNumber(groupTotals.tot) || '0'}
+            </div>
+          </div>
+
+          <div className="rounded-lg bg-amber-50/90 dark:bg-amber-950/40 border border-amber-200/70 dark:border-amber-800/60 px-3.5 py-2.5">
+            <div className="text-xs font-medium text-amber-700 dark:text-amber-300">
+              Total Deductions
+            </div>
+            <div className="text-lg font-bold tabular-nums text-amber-950 dark:text-amber-100 mt-0.5">
+              ₹{formatIndianNumber(groupTotals.ded) || '0'}
+            </div>
+          </div>
+
+          <div className="rounded-lg bg-emerald-50/90 dark:bg-emerald-950/40 border border-emerald-200/70 dark:border-emerald-800/60 px-3.5 py-2.5">
+            <div className="text-xs font-medium text-emerald-700 dark:text-emerald-300">
+              Net Payable
+            </div>
+            <div className="text-lg font-bold tabular-nums text-emerald-900 dark:text-emerald-200 mt-0.5">
+              ₹{formatIndianNumber(passedNet) || '0'}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-end gap-3 pt-3 border-t border-indigo-100 dark:border-slate-800">
+          <label className="flex flex-col gap-1 text-xs font-semibold text-indigo-900 dark:text-indigo-200">
             <span>Month</span>
             <select
               value={state.m}
               onChange={(e) => onChangeMonth(Number(e.target.value))}
-              className="px-2.5 py-1.5 text-sm rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100"
+              className="px-2.5 py-1.5 text-sm rounded-lg border border-indigo-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
             >
               {MONTHS.map((m, idx) => (
                 <option key={m} value={idx}>
@@ -287,50 +312,50 @@ export const PayBillTab: React.FC<PayBillTabProps> = ({
             </select>
           </label>
 
-          <label className="flex flex-col gap-1 text-xs font-medium text-slate-700 dark:text-slate-300">
+          <label className="flex flex-col gap-1 text-xs font-semibold text-indigo-900 dark:text-indigo-200">
             <span>Year</span>
             <input
               type="number"
               value={state.y}
               onChange={(e) => onChangeYear(Number(e.target.value) || new Date().getFullYear())}
-              className="w-22 px-2.5 py-1.5 text-sm tabular-nums rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100"
+              className="w-22 px-2.5 py-1.5 text-sm tabular-nums rounded-lg border border-indigo-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
             />
           </label>
 
-          <label className="flex flex-col gap-1 text-xs font-medium text-slate-700 dark:text-slate-300">
+          <label className="flex flex-col gap-1 text-xs font-semibold text-indigo-900 dark:text-indigo-200">
             <span>D.A %</span>
             <input
               type="number"
               step="1"
               value={state.da}
               onChange={(e) => onChangeRate('da', Number(e.target.value) || 0)}
-              className="w-20 px-2.5 py-1.5 text-sm tabular-nums rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100"
+              className="w-20 px-2.5 py-1.5 text-sm tabular-nums rounded-lg border border-indigo-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
             />
           </label>
 
-          <label className="flex flex-col gap-1 text-xs font-medium text-slate-700 dark:text-slate-300">
+          <label className="flex flex-col gap-1 text-xs font-semibold text-indigo-900 dark:text-indigo-200">
             <span>H.R.A %</span>
             <input
               type="number"
               step="0.1"
               value={state.hra}
               onChange={(e) => onChangeRate('hra', Number(e.target.value) || 0)}
-              className="w-20 px-2.5 py-1.5 text-sm tabular-nums rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100"
+              className="w-20 px-2.5 py-1.5 text-sm tabular-nums rounded-lg border border-indigo-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
             />
           </label>
 
-          <label className="flex flex-col gap-1 text-xs font-medium text-slate-700 dark:text-slate-300">
+          <label className="flex flex-col gap-1 text-xs font-semibold text-indigo-900 dark:text-indigo-200">
             <span>PRAN % (of Pay+DA)</span>
             <input
               type="number"
               step="0.1"
               value={state.pr}
               onChange={(e) => onChangeRate('pr', Number(e.target.value) || 0)}
-              className="w-28 px-2.5 py-1.5 text-sm tabular-nums rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100"
+              className="w-28 px-2.5 py-1.5 text-sm tabular-nums rounded-lg border border-indigo-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
             />
           </label>
 
-          <label className="flex flex-col gap-1 text-xs font-medium text-slate-700 dark:text-slate-300">
+          <label className="flex flex-col gap-1 text-xs font-semibold text-indigo-900 dark:text-indigo-200">
             <span>Print: Rows / Page</span>
             <input
               type="number"
@@ -338,60 +363,60 @@ export const PayBillTab: React.FC<PayBillTabProps> = ({
               max={20}
               value={rpb}
               onChange={(e) => onChangeRowsPerPage('bill', Number(e.target.value) || 1)}
-              className="w-24 px-2.5 py-1.5 text-sm tabular-nums rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100"
+              className="w-24 px-2.5 py-1.5 text-sm tabular-nums rounded-lg border border-indigo-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
             />
           </label>
 
           <button
             type="button"
             onClick={() => onClearBreaks('bill')}
-            className="px-3 py-1.5 text-xs font-medium rounded-md border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+            className="px-3 py-1.5 text-xs font-medium rounded-lg border border-indigo-200 dark:border-slate-700 bg-indigo-50/50 dark:bg-slate-800 text-indigo-800 dark:text-indigo-200 hover:bg-indigo-100/70 dark:hover:bg-slate-700 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
           >
             Clear Page Breaks
           </button>
 
-          <div className="ml-auto relative min-w-[200px]">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <div className="ml-auto relative min-w-[210px]">
+            <Search className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search staff, PRAN, HRMS..."
-              className="w-full pl-8 pr-3 py-1.5 text-xs rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
+              className="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-indigo-200 dark:border-slate-700 bg-indigo-50/30 dark:bg-slate-950 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:bg-white dark:focus:bg-slate-950"
             />
           </div>
         </div>
       </div>
 
       {/* Staff Editor Data Grid */}
-      <div className="no-print bg-white dark:bg-slate-900 border-2 border-slate-400 dark:border-slate-600 rounded-lg overflow-hidden">
+      <div className="no-print bg-white dark:bg-slate-900 border-2 border-indigo-400 dark:border-indigo-700 rounded-xl shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full border-collapse min-w-[1560px] text-xs">
             <thead>
-              <tr className="bg-slate-100 dark:bg-slate-800 border-b-2 border-slate-400 dark:border-slate-600 text-slate-800 dark:text-slate-200">
-                <th className="px-2 py-2.5 text-center font-semibold border-r border-slate-400 dark:border-slate-600 w-9">
+              <tr className="bg-gradient-to-r from-indigo-700 via-blue-700 to-teal-700 dark:from-indigo-900 dark:via-blue-900 dark:to-teal-900 border-b-2 border-indigo-900 dark:border-indigo-500 text-white">
+                <th className="px-2 py-2.5 text-center font-semibold border-r border-indigo-400/50 dark:border-indigo-600 w-9">
                   #
                 </th>
                 {EDITOR_FIELDS.map((f) => (
                   <th
                     key={f.key}
-                    className={`px-2 py-2.5 font-semibold border-r border-slate-400 dark:border-slate-600 ${
+                    className={`px-2 py-2.5 font-semibold border-r border-indigo-400/50 dark:border-indigo-600 ${
                       f.numeric ? 'text-right' : 'text-left'
                     }`}
                   >
                     {f.label}
                   </th>
                 ))}
-                <th className="px-2 py-2.5 text-left font-semibold border-r border-slate-400 dark:border-slate-600">
+                <th className="px-2 py-2.5 text-left font-semibold border-r border-indigo-400/50 dark:border-indigo-600">
                   Bill
                 </th>
-                <th className="px-2 py-2.5 text-right font-semibold border-r border-slate-400 dark:border-slate-600">
+                <th className="px-2 py-2.5 text-right font-semibold border-r border-indigo-400/50 dark:border-indigo-600 bg-amber-600/30">
                   D.A adj
                 </th>
-                <th className="px-2 py-2.5 text-right font-semibold border-r border-slate-400 dark:border-slate-600">
+                <th className="px-2 py-2.5 text-right font-semibold border-r border-indigo-400/50 dark:border-indigo-600 bg-amber-600/30">
                   H.R.A adj
                 </th>
-                <th className="px-2 py-2.5 text-right font-semibold border-r border-slate-400 dark:border-slate-600">
+                <th className="px-2 py-2.5 text-right font-semibold border-r border-indigo-400/50 dark:border-indigo-600 bg-amber-600/30">
                   PRAN adj
                 </th>
                 <th className="px-2 py-2.5 text-center font-semibold w-24">Actions</th>
@@ -407,7 +432,7 @@ export const PayBillTab: React.FC<PayBillTabProps> = ({
                         <button
                           type="button"
                           onClick={() => setSearchQuery('')}
-                          className="px-3 py-1.5 text-xs font-medium rounded-md border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"
+                          className="px-3 py-1.5 text-xs font-medium rounded-lg border border-indigo-200 dark:border-slate-700 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-slate-800 cursor-pointer"
                         >
                           Clear Search
                         </button>
@@ -418,7 +443,7 @@ export const PayBillTab: React.FC<PayBillTabProps> = ({
                         <button
                           type="button"
                           onClick={onAddEmployee}
-                          className="px-3.5 py-1.5 text-xs font-medium rounded-md bg-blue-700 text-white hover:bg-blue-800 cursor-pointer"
+                          className="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer"
                         >
                           + Add First Employee
                         </button>
@@ -437,13 +462,13 @@ export const PayBillTab: React.FC<PayBillTabProps> = ({
                   return (
                     <tr
                       key={globalIndex}
-                      className={`hover:bg-slate-50/80 dark:hover:bg-slate-800/40 ${
+                      className={`even:bg-sky-50/40 dark:even:bg-slate-800/40 hover:bg-indigo-50/75 dark:hover:bg-indigo-950/40 transition-colors ${
                         (emp.g || 0) === currentGroupIdx
                           ? ''
                           : 'opacity-65 bg-slate-50/40 dark:bg-slate-900/40'
                       }`}
                     >
-                      <td className="px-2 py-1 text-center tabular-nums text-slate-600 dark:text-slate-300 border-r border-slate-400 dark:border-slate-600">
+                      <td className="px-2 py-1 text-center font-semibold tabular-nums text-indigo-700 dark:text-indigo-300 border-r border-slate-400 dark:border-slate-600">
                         {globalIndex + 1}
                       </td>
                       {EDITOR_FIELDS.map((f) => (
@@ -465,9 +490,9 @@ export const PayBillTab: React.FC<PayBillTabProps> = ({
                                   : e.target.value
                               )
                             }
-                            className={`w-full px-1.5 py-1 text-xs bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:bg-blue-50/70 dark:focus:bg-blue-950/50 rounded ${
+                            className={`w-full px-1.5 py-1 text-xs bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:bg-indigo-100/70 dark:focus:bg-indigo-950/60 rounded ${
                               f.wide ? 'min-w-[140px]' : 'min-w-[68px]'
-                            } ${f.numeric ? 'text-right tabular-nums font-mono' : ''}`}
+                            } ${f.numeric ? 'text-right tabular-nums font-mono font-medium' : ''}`}
                           />
                         </td>
                       ))}
@@ -478,7 +503,7 @@ export const PayBillTab: React.FC<PayBillTabProps> = ({
                           onChange={(e) =>
                             onUpdateEmployeeField(globalIndex, 'g', Number(e.target.value))
                           }
-                          className="px-1.5 py-1 text-xs bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-600 rounded focus:outline-none"
+                          className="px-1.5 py-1 text-xs bg-indigo-50/70 dark:bg-slate-950 text-indigo-950 dark:text-indigo-200 border border-indigo-200 dark:border-slate-600 rounded focus:outline-none"
                         >
                           {groups.map((g, k) => (
                             <option key={k} value={k}>
@@ -493,7 +518,7 @@ export const PayBillTab: React.FC<PayBillTabProps> = ({
                         return (
                           <td
                             key={k}
-                            className="p-0.5 border-r border-slate-400 dark:border-slate-600"
+                            className="p-0.5 border-r border-slate-400 dark:border-slate-600 bg-amber-50/35 dark:bg-amber-950/15"
                           >
                             <input
                               type="text"
@@ -502,7 +527,7 @@ export const PayBillTab: React.FC<PayBillTabProps> = ({
                               onChange={(e) =>
                                 onUpdateEmployeeOverride(globalIndex, k, e.target.value)
                               }
-                              className="w-full min-w-[64px] px-1.5 py-1 text-xs text-right tabular-nums font-mono bg-transparent text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:bg-amber-50/70 dark:focus:bg-amber-950/30 rounded"
+                              className="w-full min-w-[64px] px-1.5 py-1 text-xs text-right tabular-nums font-mono bg-transparent text-slate-900 dark:text-slate-100 placeholder:text-amber-700/60 dark:placeholder:text-amber-400/50 focus:outline-none focus:bg-amber-100/70 dark:focus:bg-amber-950/40 rounded"
                             />
                           </td>
                         );
@@ -514,7 +539,7 @@ export const PayBillTab: React.FC<PayBillTabProps> = ({
                             type="button"
                             title="Move up"
                             onClick={() => onMoveEmployee(globalIndex, -1)}
-                            className="p-1 rounded border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+                            className="p-1 rounded border border-indigo-200 dark:border-slate-700 bg-indigo-50/60 dark:bg-slate-800 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-slate-700 cursor-pointer"
                           >
                             <ArrowUp className="w-3 h-3" />
                           </button>
@@ -522,7 +547,7 @@ export const PayBillTab: React.FC<PayBillTabProps> = ({
                             type="button"
                             title="Move down"
                             onClick={() => onMoveEmployee(globalIndex, 1)}
-                            className="p-1 rounded border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+                            className="p-1 rounded border border-indigo-200 dark:border-slate-700 bg-indigo-50/60 dark:bg-slate-800 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-slate-700 cursor-pointer"
                           >
                             <ArrowDown className="w-3 h-3" />
                           </button>
@@ -530,7 +555,7 @@ export const PayBillTab: React.FC<PayBillTabProps> = ({
                             type="button"
                             title="Delete employee"
                             onClick={() => onDeleteEmployee(globalIndex)}
-                            className="p-1 rounded border border-slate-200 dark:border-slate-700 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/50 cursor-pointer"
+                            className="p-1 rounded border border-rose-200 dark:border-rose-900/60 bg-rose-50/70 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-950/70 cursor-pointer"
                           >
                             <Trash2 className="w-3 h-3" />
                           </button>
@@ -546,8 +571,12 @@ export const PayBillTab: React.FC<PayBillTabProps> = ({
       </div>
 
       {/* Print-Ready Pay Bill Preview */}
-      <div className="pv-wrap pv-landscape overflow-x-auto bg-white rounded-lg border border-slate-200 dark:border-slate-800 p-3">
-        <div ref={billRef} id="bill" className="bill">
+      <div className="pv-wrap pv-landscape overflow-x-auto bg-gradient-to-b from-indigo-100/60 to-sky-100/50 dark:from-slate-900 dark:to-slate-950 rounded-xl border border-indigo-200/80 dark:border-slate-800 p-4 sm:p-5">
+        <div className="no-print mb-2.5 flex items-center justify-between text-xs font-medium text-indigo-900/80 dark:text-indigo-200/80">
+          <span>Printable Document Preview · A4 Landscape</span>
+          <span>Click any cell below to adjust values inline</span>
+        </div>
+        <div ref={billRef} id="bill" className="bill shadow-md p-3">
           <div className="t1">
             {school.name}, BLOCK - {school.block}, DIST-{school.dist}
           </div>

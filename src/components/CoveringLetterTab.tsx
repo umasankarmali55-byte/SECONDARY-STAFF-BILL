@@ -65,24 +65,24 @@ export const CoveringLetterTab: React.FC<CoveringLetterTabProps> = ({
 
   return (
     <div className="space-y-4">
-      <div className="no-print bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-4">
+      <div className="no-print bg-white/95 dark:bg-slate-900/95 border border-indigo-200/80 dark:border-slate-800 rounded-xl shadow-xs p-4">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+            <h1 className="text-lg font-display font-bold text-indigo-950 dark:text-indigo-100">
               Covering Letter (A4 Portrait)
             </h1>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
               Click any line of the letter to edit it. School details come from the School Details panel. Month and year stay synced across all tabs.
             </p>
           </div>
 
           <div className="flex flex-wrap items-end gap-3">
-            <label className="flex flex-col gap-1 text-xs font-medium text-slate-700 dark:text-slate-300">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-indigo-900 dark:text-indigo-200">
               <span>Month</span>
               <select
                 value={state.m}
                 onChange={(e) => onChangeMonth(Number(e.target.value))}
-                className="px-2.5 py-1.5 text-sm rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100"
+                className="px-2.5 py-1.5 text-sm rounded-lg border border-indigo-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
               >
                 {MONTHS.map((m, idx) => (
                   <option key={m} value={idx}>
@@ -92,20 +92,20 @@ export const CoveringLetterTab: React.FC<CoveringLetterTabProps> = ({
               </select>
             </label>
 
-            <label className="flex flex-col gap-1 text-xs font-medium text-slate-700 dark:text-slate-300">
+            <label className="flex flex-col gap-1 text-xs font-semibold text-indigo-900 dark:text-indigo-200">
               <span>Year</span>
               <input
                 type="number"
                 value={state.y}
                 onChange={(e) => onChangeYear(Number(e.target.value) || new Date().getFullYear())}
-                className="w-24 px-2.5 py-1.5 text-sm tabular-nums rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100"
+                className="w-24 px-2.5 py-1.5 text-sm tabular-nums rounded-lg border border-indigo-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
               />
             </label>
 
             <button
               type="button"
               onClick={onPrint}
-              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-md bg-blue-700 hover:bg-blue-800 text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-xs transition-all whitespace-nowrap shrink-0 cursor-pointer"
             >
               <Printer className="w-3.5 h-3.5" />
               Print (A4 Portrait)
@@ -114,8 +114,12 @@ export const CoveringLetterTab: React.FC<CoveringLetterTabProps> = ({
         </div>
       </div>
 
-      <div className="pv-wrap pv-portrait overflow-x-auto bg-slate-200/70 dark:bg-slate-950/70 p-4 rounded-lg border border-slate-200 dark:border-slate-800">
-        <div ref={letterRef} id="ltr" className="lt shadow-md">
+      <div className="pv-wrap pv-portrait overflow-x-auto bg-gradient-to-b from-indigo-100/60 to-sky-100/50 dark:from-slate-900 dark:to-slate-950 p-4 sm:p-6 rounded-xl border border-indigo-200/80 dark:border-slate-800">
+        <div className="no-print mb-2.5 flex items-center justify-between text-xs font-medium text-indigo-900/80 dark:text-indigo-200/80 max-w-[210mm] mx-auto">
+          <span>Printable Document Preview · A4 Portrait</span>
+          <span>Click any line on the letter to edit</span>
+        </div>
+        <div ref={letterRef} id="ltr" className="lt shadow-lg">
           <img
             className="wmk"
             src={WATERMARK_DATA_URI}

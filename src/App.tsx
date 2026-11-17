@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Moon, Printer, Settings, Sun } from 'lucide-react';
+import { FileSpreadsheet, Moon, Printer, Settings, Sun } from 'lucide-react';
 import { AbsenteeTab } from './components/AbsenteeTab';
 import { BillGroupBar } from './components/BillGroupBar';
 import { CoveringLetterTab } from './components/CoveringLetterTab';
@@ -392,15 +392,19 @@ export default function App() {
   const school = getSchoolDetails(state);
 
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
+    <div className="min-h-screen bg-gradient-to-br from-sky-50 via-slate-50 to-indigo-50/70 dark:from-slate-950 dark:via-slate-950 dark:to-indigo-950/30 text-slate-900 dark:text-slate-100 transition-colors">
       {/* Top Bar */}
-      <header className="no-print sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-800">
+      <header className="no-print sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-indigo-200/80 dark:border-slate-800 shadow-xs">
+        <div className="h-1 w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-teal-500" />
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-8">
-          <div className="font-display font-bold text-base tracking-tight text-slate-900 dark:text-slate-100 whitespace-nowrap shrink-0">
-            School Bills
+          <div className="inline-flex items-center gap-2.5 font-display font-bold text-base tracking-tight text-slate-900 dark:text-slate-100 whitespace-nowrap shrink-0">
+            <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-600 to-blue-600 text-white shadow-xs">
+              <FileSpreadsheet className="w-4 h-4" />
+            </span>
+            <span>School Bills</span>
           </div>
 
-          <nav aria-label="Document Sections" className="flex items-center gap-1 sm:gap-2">
+          <nav aria-label="Document Sections" className="flex items-center gap-1 sm:gap-1.5 p-1 rounded-lg bg-indigo-50/80 dark:bg-slate-800/80 border border-indigo-100 dark:border-slate-700/70">
             {(
               [
                 { id: 'pay', label: 'Pay Bill' },
@@ -414,10 +418,10 @@ export default function App() {
                   key={item.id}
                   type="button"
                   onClick={() => setActiveTab(item.id)}
-                  className={`px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                  className={`px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-md transition-all whitespace-nowrap shrink-0 cursor-pointer ${
                     active
-                      ? 'bg-blue-700 text-white'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
+                      ? 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-xs'
+                      : 'text-slate-700 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-white hover:bg-white/70 dark:hover:bg-slate-700/60'
                   }`}
                 >
                   {item.label}
@@ -431,28 +435,28 @@ export default function App() {
               type="button"
               onClick={() => setShowSettings((s) => !s)}
               aria-expanded={showSettings}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg border transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                 showSettings
-                  ? 'border-blue-600 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300'
-                  : 'border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800'
+                  ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300'
+                  : 'border-indigo-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-indigo-50/60 dark:hover:bg-slate-800'
               }`}
             >
-              <Settings className="w-3.5 h-3.5" />
+              <Settings className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
               <span className="hidden sm:inline">School Details</span>
             </button>
 
             <div
               role="group"
               aria-label="Color theme"
-              className="inline-flex items-center p-0.5 rounded-md border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800"
+              className="inline-flex items-center p-0.5 rounded-lg border border-indigo-200 dark:border-slate-700 bg-indigo-50/70 dark:bg-slate-800"
             >
               <button
                 type="button"
                 onClick={() => setIsDark(false)}
                 aria-pressed={!isDark}
-                className={`inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                className={`inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-md transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                   !isDark
-                    ? 'bg-white text-slate-900 shadow-xs'
+                    ? 'bg-white text-amber-600 shadow-xs'
                     : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
@@ -463,9 +467,9 @@ export default function App() {
                 type="button"
                 onClick={() => setIsDark(true)}
                 aria-pressed={isDark}
-                className={`inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                className={`inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-md transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                   isDark
-                    ? 'bg-slate-950 text-slate-100 shadow-xs'
+                    ? 'bg-indigo-600 text-white shadow-xs'
                     : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
@@ -479,7 +483,7 @@ export default function App() {
             <button
               type="button"
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium rounded-md bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-white transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-gradient-to-r from-slate-900 to-indigo-950 dark:from-indigo-500 dark:to-blue-500 text-white hover:from-slate-800 hover:to-indigo-900 dark:hover:from-indigo-400 dark:hover:to-blue-400 transition-all shadow-xs whitespace-nowrap shrink-0 cursor-pointer"
             >
               <Printer className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Print</span>
@@ -489,17 +493,17 @@ export default function App() {
       </header>
 
       <main className="max-w-[1400px] mx-auto px-4 sm:px-6 py-4">
-        {/* School Identity Sub-Header */}
-        <div className="no-print mb-4 flex flex-wrap items-baseline justify-between gap-2">
+        {/* School Identity Banner */}
+        <div className="no-print mb-4 rounded-xl bg-gradient-to-r from-indigo-700 via-blue-700 to-teal-700 dark:from-indigo-900/90 dark:via-blue-900/90 dark:to-teal-900/80 dark:border dark:border-indigo-700/40 px-5 py-3.5 text-white shadow-sm flex flex-wrap items-center justify-between gap-3">
           <div>
-            <div className="text-base font-bold text-slate-900 dark:text-slate-100">
+            <div className="text-base sm:text-lg font-display font-bold tracking-tight text-white">
               {school.name}
             </div>
-            <div className="text-xs text-slate-500 dark:text-slate-400">
+            <div className="text-xs text-sky-100 mt-0.5">
               Pay Bill &amp; Absentee Statement · Block {school.block} · Dist. {school.dist} · UDISE {school.udise}
             </div>
           </div>
-          <div className="text-xs text-slate-500 dark:text-slate-400">
+          <div className="text-xs font-medium text-teal-100">
             All changes auto-save locally in your browser
           </div>
         </div>

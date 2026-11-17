@@ -17,7 +17,7 @@ export const PWAInstallButton: React.FC = () => {
         onClick={() => {
           void install();
         }}
-        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-blue-700 text-white hover:bg-blue-800 transition-colors shadow-xs whitespace-nowrap shrink-0 cursor-pointer"
+        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:from-emerald-700 hover:to-teal-700 transition-all shadow-xs whitespace-nowrap shrink-0 cursor-pointer"
       >
         <Download className="w-3.5 h-3.5" />
         <span>Install App</span>
@@ -31,7 +31,7 @@ export const PWAInstallButton: React.FC = () => {
         <button
           type="button"
           onClick={() => setShowIOSGuide(true)}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-blue-600/40 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/60 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg border border-emerald-500/40 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
         >
           <Smartphone className="w-3.5 h-3.5" />
           <span>Install App</span>

@@ -402,6 +402,12 @@ table.a td {
   .bill,
   .ab {
     width: 100%;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .lt {
+    box-shadow: none !important;
   }
 
   .ce:hover,
