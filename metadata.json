@@ -1,0 +1,6 @@
+{
+  "name": "School Bills — Secondary Staff",
+  "description": "Monthly Pay Bill, Absentee Statement, and Covering Letter generator for secondary school staff.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
