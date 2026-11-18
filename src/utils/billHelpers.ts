@@ -8,6 +8,9 @@ import type {
 
 export const STORAGE_KEY = 'pranbill';
 
+export const DEFAULT_SCHOOL_LOGO_SRC =
+  '/assets/aistudio/Gemini_Generated_Image_aceoqwaceoqwaceo_8978e281.png';
+
 export const MONTHS = [
   'JANUARY',
   'FEBRUARY',
@@ -474,4 +477,43 @@ export function exportGroupCsv(
   a.download = `${safeGroup}-${MONTHS[state.m].toLowerCase()}-${state.y}.csv`;
   a.click();
   URL.revokeObjectURL(url);
+}
+
+export async function processLogoFile(file: File): Promise<string> {
+  const rawDataUrl = await new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ''));
+    reader.onerror = () => reject(new Error('Failed to read image file'));
+    reader.readAsDataURL(file);
+  });
+
+  if (file.type === 'image/svg+xml') {
+    return rawDataUrl;
+  }
+
+  return new Promise<string>((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      const maxDim = 800;
+      const scale = Math.min(1, maxDim / Math.max(img.width || 1, img.height || 1));
+      const w = Math.max(1, Math.round((img.width || maxDim) * scale));
+      const h = Math.max(1, Math.round((img.height || maxDim) * scale));
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        resolve(rawDataUrl);
+        return;
+      }
+      ctx.drawImage(img, 0, 0, w, h);
+      try {
+        resolve(canvas.toDataURL('image/png'));
+      } catch {
+        resolve(rawDataUrl);
+      }
+    };
+    img.onerror = () => resolve(rawDataUrl);
+    img.src = rawDataUrl;
+  });
 }

@@ -1,16 +1,22 @@
 import React, { useRef } from 'react';
-import { Printer } from 'lucide-react';
-import type { BillState } from '../types/bill';
-import { getGroupName, getSchoolDetails, MONTHS, titleCase } from '../utils/billHelpers';
+import { ImagePlus, Printer, RotateCcw } from 'lucide-react';
+import type { BillState, SchoolDetails } from '../types/bill';
+import {
+  DEFAULT_SCHOOL_LOGO_SRC,
+  getGroupName,
+  getSchoolDetails,
+  MONTHS,
+  processLogoFile,
+  titleCase,
+} from '../utils/billHelpers';
 import { EditableCell } from './EditableCell';
-
-const SCHOOL_LOGO_SRC = '/assets/aistudio/Gemini_Generated_Image_aceoqwaceoqwaceo_8978e281.png';
 
 interface CoveringLetterTabProps {
   state: BillState;
   onChangeMonth: (month: number) => void;
   onChangeYear: (year: number) => void;
   onUpdateLetterText: (key: string, value: string) => void;
+  onUpdateSchool: (key: keyof SchoolDetails, value: string | boolean) => void;
   onPrint: () => void;
 }
 
@@ -19,10 +25,13 @@ export const CoveringLetterTab: React.FC<CoveringLetterTabProps> = ({
   onChangeMonth,
   onChangeYear,
   onUpdateLetterText,
+  onUpdateSchool,
   onPrint,
 }) => {
   const letterRef = useRef<HTMLDivElement | null>(null);
+  const logoInputRef = useRef<HTMLInputElement | null>(null);
   const school = getSchoolDetails(state);
+  const logoSrc = school.logo || DEFAULT_SCHOOL_LOGO_SRC;
   const mon = MONTHS[state.m];
   const district = titleCase(school.dist);
   const groupName = getGroupName(state);
@@ -78,6 +87,20 @@ export const CoveringLetterTab: React.FC<CoveringLetterTabProps> = ({
         ].join(' ')
       : 'All the particulars provided in the given Proforma of Claim-cum- absentees statement of the Assistant teachers of this school are true to the best of my knowledge and Self-belief as per performance of the teachers for this month and official record of this school.';
 
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const dataUrl = await processLogoFile(file);
+      if (dataUrl) {
+        onUpdateSchool('logo', dataUrl);
+      }
+    } catch {
+      // Ignore unreadable image files
+    }
+    e.target.value = '';
+  };
+
   return (
     <div className="space-y-4">
       <div className="no-print bg-white/95 dark:bg-slate-900/95 border border-indigo-200/80 dark:border-slate-800 rounded-xl shadow-xs p-4">
@@ -91,7 +114,7 @@ export const CoveringLetterTab: React.FC<CoveringLetterTabProps> = ({
             </p>
           </div>
 
-          <div className="flex flex-wrap items-end gap-3">
+          <div className="flex flex-wrap items-end gap-2.5">
             <label className="flex flex-col gap-1 text-xs font-semibold text-indigo-900 dark:text-indigo-200">
               <span>Month</span>
               <select
@@ -117,6 +140,35 @@ export const CoveringLetterTab: React.FC<CoveringLetterTabProps> = ({
               />
             </label>
 
+            <input
+              ref={logoInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleLogoUpload}
+              className="hidden"
+            />
+
+            <button
+              type="button"
+              onClick={() => logoInputRef.current?.click()}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-lg border border-teal-300 dark:border-teal-700 bg-teal-50/80 dark:bg-teal-950/40 text-teal-800 dark:text-teal-200 hover:bg-teal-100 dark:hover:bg-teal-900/60 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+            >
+              <ImagePlus className="w-3.5 h-3.5" />
+              Add Logo
+            </button>
+
+            {school.logo && (
+              <button
+                type="button"
+                onClick={() => onUpdateSchool('logo', '')}
+                title="Restore default school crest logo"
+                className="inline-flex items-center gap-1 px-3 py-2 text-xs font-medium rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                Reset Logo
+              </button>
+            )}
+
             <button
               type="button"
               onClick={onPrint}
@@ -139,7 +191,7 @@ export const CoveringLetterTab: React.FC<CoveringLetterTabProps> = ({
           {/* Center Circular School Crest Watermark */}
           <img
             className="lt-wmk"
-            src={SCHOOL_LOGO_SRC}
+            src={logoSrc}
             alt="School emblem watermark"
             referrerPolicy="no-referrer"
           />
@@ -162,7 +214,7 @@ export const CoveringLetterTab: React.FC<CoveringLetterTabProps> = ({
           <div className="lt-header">
             <img
               className="lt-logo"
-              src={SCHOOL_LOGO_SRC}
+              src={logoSrc}
               alt="School crest logo"
               referrerPolicy="no-referrer"
             />
@@ -275,9 +327,9 @@ export const CoveringLetterTab: React.FC<CoveringLetterTabProps> = ({
           <div
             style={{
               position: 'absolute',
-              left: '10.5mm',
-              right: '10.5mm',
-              bottom: '8.5mm',
+              left: '5.5mm',
+              right: '5.5mm',
+              bottom: '6mm',
               fontSize: '11pt',
               fontWeight: 700,
               fontStyle: 'italic',
@@ -297,8 +349,8 @@ export const CoveringLetterTab: React.FC<CoveringLetterTabProps> = ({
             <div
               style={{
                 position: 'absolute',
-                right: '9mm',
-                bottom: '3.5mm',
+                right: '5.5mm',
+                bottom: '2.5mm',
                 fontSize: '6.5pt',
                 fontWeight: 400,
                 lineHeight: 1.2,

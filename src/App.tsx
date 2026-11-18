@@ -119,12 +119,14 @@ export default function App() {
     (key: keyof SchoolDetails, value: string | boolean) => {
       updateState((prev) => {
         const nextAt = { ...(prev.at || {}) };
-        delete nextAt.o1;
-        delete nextAt.o2;
-        delete nextAt.o3;
-        delete nextAt.l_p2;
-        delete nextAt.l_to1;
-        delete nextAt.l_to2;
+        if (key !== 'logo' && key !== 'pdev' && key !== 'lhtxt') {
+          delete nextAt.o1;
+          delete nextAt.o2;
+          delete nextAt.o3;
+          delete nextAt.l_p2;
+          delete nextAt.l_to1;
+          delete nextAt.l_to2;
+        }
         return {
           ...prev,
           sc: { ...(prev.sc || {}), [key]: value },
@@ -392,7 +394,7 @@ export default function App() {
   const school = getSchoolDetails(state);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-50 via-slate-50 to-indigo-50/70 dark:from-slate-950 dark:via-slate-950 dark:to-indigo-950/30 text-slate-900 dark:text-slate-100 transition-colors">
+    <div className="app-shell min-h-screen bg-gradient-to-br from-sky-50 via-slate-50 to-indigo-50/70 dark:from-slate-950 dark:via-slate-950 dark:to-indigo-950/30 text-slate-900 dark:text-slate-100 transition-colors">
       {/* Top Bar */}
       <header className="no-print sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-indigo-200/80 dark:border-slate-800 shadow-xs">
         <div className="h-1 w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-teal-500" />
@@ -492,7 +494,7 @@ export default function App() {
         </div>
       </header>
 
-      <main className="max-w-[1400px] mx-auto px-4 sm:px-6 py-4">
+      <main className="app-main max-w-[1400px] mx-auto px-4 sm:px-6 py-4">
         {/* School Identity Banner */}
         <div className="no-print mb-4 rounded-xl bg-gradient-to-r from-indigo-700 via-blue-700 to-teal-700 dark:from-indigo-900/90 dark:via-blue-900/90 dark:to-teal-900/80 dark:border dark:border-indigo-700/40 px-5 py-3.5 text-white shadow-sm flex flex-wrap items-center justify-between gap-3">
           <div>
@@ -575,6 +577,7 @@ export default function App() {
             onChangeMonth={(m) => updateState((p) => ({ ...p, m }))}
             onChangeYear={(y) => updateState((p) => ({ ...p, y }))}
             onUpdateLetterText={handleUpdateMetaText}
+            onUpdateSchool={handleUpdateSchool}
             onPrint={handlePrint}
           />
         )}

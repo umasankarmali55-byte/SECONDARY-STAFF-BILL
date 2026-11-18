@@ -263,7 +263,7 @@ table.a td {
   letter-spacing: 0;
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
-  padding: 9mm 9mm 10mm 9mm;
+  padding: 5.5mm 5.5mm 6mm 5.5mm;
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
@@ -400,7 +400,7 @@ table.a td {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-top: 4.2mm;
+  margin-top: 3.5mm;
   color: #cc0000;
   font-family: Georgia, "Times New Roman", serif;
   font-style: italic;
@@ -442,8 +442,8 @@ table.a td {
 .lt-body {
   position: relative;
   z-index: 1;
-  margin-top: 7mm;
-  padding: 0 1.5mm;
+  margin-top: 5.5mm;
+  padding: 0;
   font-size: 11.3pt;
   line-height: 1.88;
   font-weight: 700;
@@ -470,8 +470,25 @@ table.a td {
     page-break-after: auto;
   }
 
+  html,
   body {
+    width: 100%;
+    height: auto;
     background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .app-shell {
+    min-height: 0 !important;
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .app-main {
+    max-width: none !important;
+    width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
   }
@@ -485,6 +502,7 @@ table.a td {
     padding: 0 !important;
     margin: 0 !important;
     border: 0 !important;
+    border-radius: 0 !important;
     box-shadow: none !important;
     background: #ffffff !important;
     overflow: visible !important;
@@ -511,7 +529,18 @@ table.a td {
   }
 
   .lt {
+    width: 210mm !important;
+    height: 296mm !important;
+    margin: 0 !important;
+    padding: 5.5mm 5.5mm 6mm 5.5mm !important;
     box-shadow: none !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .lt * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   .ce:hover,

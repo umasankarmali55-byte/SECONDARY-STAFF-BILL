@@ -1,7 +1,12 @@
 import React, { useRef } from 'react';
-import { Download, Upload, X } from 'lucide-react';
+import { Download, ImagePlus, RotateCcw, Upload, X } from 'lucide-react';
 import type { BillState, SchoolDetails } from '../types/bill';
-import { getSchoolDetails, normalizeState } from '../utils/billHelpers';
+import {
+  DEFAULT_SCHOOL_LOGO_SRC,
+  getSchoolDetails,
+  normalizeState,
+  processLogoFile,
+} from '../utils/billHelpers';
 
 interface SchoolSettingsPanelProps {
   state: BillState;
@@ -37,6 +42,7 @@ export const SchoolSettingsPanel: React.FC<SchoolSettingsPanelProps> = ({
 }) => {
   const school = getSchoolDetails(state);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const logoInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleExportJson = () => {
     const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
@@ -61,6 +67,20 @@ export const SchoolSettingsPanel: React.FC<SchoolSettingsPanelProps> = ({
       }
     };
     reader.readAsText(file);
+    e.target.value = '';
+  };
+
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const dataUrl = await processLogoFile(file);
+      if (dataUrl) {
+        onUpdateSchool('logo', dataUrl);
+      }
+    } catch {
+      // Ignore unreadable image files
+    }
     e.target.value = '';
   };
 
@@ -135,6 +155,40 @@ export const SchoolSettingsPanel: React.FC<SchoolSettingsPanelProps> = ({
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-4 mt-4 pt-4 border-t border-indigo-100 dark:border-slate-800">
+          <div className="flex flex-wrap items-center gap-3">
+            <img
+              src={school.logo || DEFAULT_SCHOOL_LOGO_SRC}
+              alt="School logo preview"
+              referrerPolicy="no-referrer"
+              className="w-10 h-10 rounded-full object-cover border border-indigo-200 dark:border-slate-700 bg-white shrink-0"
+            />
+            <input
+              ref={logoInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleLogoUpload}
+              className="hidden"
+            />
+            <button
+              type="button"
+              onClick={() => logoInputRef.current?.click()}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg border border-teal-300 dark:border-teal-700 bg-teal-50/80 dark:bg-teal-950/40 text-teal-800 dark:text-teal-200 hover:bg-teal-100 dark:hover:bg-teal-900/60 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+            >
+              <ImagePlus className="w-3.5 h-3.5" />
+              Add Logo from Computer
+            </button>
+            {school.logo && (
+              <button
+                type="button"
+                onClick={() => onUpdateSchool('logo', '')}
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-lg border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                Reset Default
+              </button>
+            )}
+          </div>
+
           <label className="inline-flex items-center gap-2 text-xs font-medium text-slate-700 dark:text-slate-300 cursor-pointer">
             <input
               type="checkbox"
@@ -144,10 +198,6 @@ export const SchoolSettingsPanel: React.FC<SchoolSettingsPanelProps> = ({
             />
             <span>Print developer name on sheets</span>
           </label>
-
-          <span className="text-xs text-slate-500 dark:text-slate-400">
-            Covering Letter heading and code bar update automatically from these fields.
-          </span>
         </div>
       </div>
     </section>

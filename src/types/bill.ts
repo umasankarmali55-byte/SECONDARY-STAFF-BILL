@@ -56,6 +56,7 @@ export interface SchoolDetails {
   devd: string;
   pdev: boolean;
   lhtxt: boolean;
+  logo?: string;
 }
 
 export interface PrintRowsPerPage {
