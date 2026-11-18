@@ -1,21 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Printer } from 'lucide-react';
-import {
-  CREST_DATA_URI,
-  LETTERHEAD_DATA_URI,
-  WATERMARK_DATA_URI,
-} from '../data/letterAssets';
 import type { BillState } from '../types/bill';
-import {
-  fitLetterLines,
-  getGroupName,
-  getSchoolDetails,
-  mmx,
-  mmy,
-  MONTHS,
-  titleCase,
-} from '../utils/billHelpers';
+import { getGroupName, getSchoolDetails, MONTHS, titleCase } from '../utils/billHelpers';
 import { EditableCell } from './EditableCell';
+
+const SCHOOL_LOGO_SRC = '/assets/aistudio/Gemini_Generated_Image_aceoqwaceoqwaceo_8978e281.png';
 
 interface CoveringLetterTabProps {
   state: BillState;
@@ -46,22 +35,48 @@ export const CoveringLetterTab: React.FC<CoveringLetterTabProps> = ({
     onUpdateLetterText(`l_${key}`, next);
   };
 
-  useEffect(() => {
-    const runFit = () => fitLetterLines(letterRef.current);
-    runFit();
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(runFit);
-    }
-    const onBeforePrint = () => runFit();
-    window.addEventListener('beforeprint', onBeforePrint);
-    return () => window.removeEventListener('beforeprint', onBeforePrint);
-  }, [state]);
+  const legacySubj =
+    at.l_s1 !== undefined || at.l_s2 !== undefined
+      ? [
+          val(
+            's1',
+            'Sub :-Submission of Monthly Claim-cum-Absentee statement of Secondary Assistant'
+          ),
+          val(
+            's2',
+            `Teachers(${groupName})of this mentioned institutions for the month of`
+          ),
+        ].join(' ')
+      : `Sub :-Submission of Monthly Claim-cum-Absentee statement of Secondary Assistant Teachers(${groupName})of this mentioned institutions for the month of`;
 
-  const boxStyle = (x: number, y: number, x2: number): React.CSSProperties => ({
-    left: mmx(x),
-    top: mmy(y - 8.85),
-    width: mmx(x2 - x),
-  });
+  const legacyBodyA =
+    at.l_p1 !== undefined ||
+    at.l_p2 !== undefined ||
+    at.l_p3 !== undefined ||
+    at.l_p4 !== undefined
+      ? [
+          val('p1', 'In inviting to kind reference to the subject cited above, I the'),
+          val(
+            'p2',
+            `Headmaster of ${titleCase(school.name)} under your jurisdiction submitting the`
+          ),
+          val('p3', 'Monthly claim-cum- absentees statement of Secondary Assistant Teachers (PRAN'),
+          val('p4', 'STAFF) of this school for the month of'),
+        ].join(' ')
+      : `In inviting to kind reference to the subject cited above, I the Headmaster of ${titleCase(school.name)} under your jurisdiction submitting the Monthly claim-cum- absentees statement of Secondary Assistant Teachers (PRAN STAFF) of this school for the month of`;
+
+  const legacyBodyB =
+    at.l_p5 !== undefined ||
+    at.l_p6 !== undefined ||
+    at.l_p7 !== undefined ||
+    at.l_p8 !== undefined
+      ? [
+          val('p5', 'All the particulars provided in the given Proforma of Claim-cum- absentees'),
+          val('p6', 'statement of the Assistant teachers of this school are true to the best of my'),
+          val('p7', 'knowledge and Self-belief as per performance of the teachers for this month and'),
+          val('p8', 'official record of this school.'),
+        ].join(' ')
+      : 'All the particulars provided in the given Proforma of Claim-cum- absentees statement of the Assistant teachers of this school are true to the best of my knowledge and Self-belief as per performance of the teachers for this month and official record of this school.';
 
   return (
     <div className="space-y-4">
@@ -119,289 +134,175 @@ export const CoveringLetterTab: React.FC<CoveringLetterTabProps> = ({
           <span>Printable Document Preview · A4 Portrait</span>
           <span>Click any line on the letter to edit</span>
         </div>
+
         <div ref={letterRef} id="ltr" className="lt shadow-lg">
+          {/* Center Circular School Crest Watermark */}
           <img
-            className="wmk"
-            src={WATERMARK_DATA_URI}
-            alt="Official school watermark"
+            className="lt-wmk"
+            src={SCHOOL_LOGO_SRC}
+            alt="School emblem watermark"
             referrerPolicy="no-referrer"
-            style={{
-              left: mmx(48),
-              top: mmy(192),
-              width: mmx(560),
-              height: mmy(535),
-            }}
           />
 
-          {school.lhtxt ? (
-            <>
-              <div
-                style={{
-                  position: 'absolute',
-                  left: mmx(8),
-                  top: mmy(3),
-                  width: mmx(633),
-                  height: mmy(197),
-                }}
-              >
-                <div className="bar" />
-                <div className="lh">
-                  <img
-                    src={CREST_DATA_URI}
-                    alt="Government school emblem"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="hc">
-                    <div className="q1">
-                      <EditableCell
-                        value={val('h1', 'THE OFFICE OF THE HEADMASTER')}
-                        onCommit={commit('h1')}
-                      />
-                    </div>
-                    <div className="q2">{school.lname}</div>
-                    <div className="q3">
-                      AT/PO-{school.place},BLOCK-{school.block},DIST-{school.dist},PIN-{school.pin}
-                    </div>
-                  </div>
-                </div>
-                <div className="pb">
-                  <u>Email-{school.email}</u>
-                  <span>BSE CODE-{school.bse}</span>
-                  <span>UDISE CODE-{school.udise}</span>
-                </div>
-              </div>
-              <div
-                className="fn lx"
-                style={{ left: mmx(12), top: mmy(167), width: mmx(260) }}
-              >
-                Letter No.:-{' '}
+          {/* Top Gradient Pill Accent Bar */}
+          <div className="lt-top-bar" />
+
+          {/* Ornamental Center Divider */}
+          <div className="lt-ornament" aria-hidden="true">
+            <span className="lt-ornament-core">
+              <span className="lt-ornament-line" />
+              <span className="lt-ornament-dot" />
+              <span className="lt-ornament-diamond" />
+              <span className="lt-ornament-dot" />
+              <span className="lt-ornament-line" />
+            </span>
+          </div>
+
+          {/* Letterhead Logo + School Heading */}
+          <div className="lt-header">
+            <img
+              className="lt-logo"
+              src={SCHOOL_LOGO_SRC}
+              alt="School crest logo"
+              referrerPolicy="no-referrer"
+            />
+            <div className="lt-header-text">
+              <div className="lt-h1">
                 <EditableCell
-                  value={val('ln', '______________')}
-                  onCommit={commit('ln')}
+                  value={val('h1', 'THE OFFICE OF THE HEADMASTER')}
+                  onCommit={commit('h1')}
                 />
               </div>
-              <div
-                className="fn lx"
-                style={{
-                  left: mmx(400),
-                  top: mmy(167),
-                  width: mmx(232),
-                  textAlign: 'right',
-                }}
-              >
-                Dated:-{' '}
-                <EditableCell
-                  value={val('dt', '______________')}
-                  onCommit={commit('dt')}
-                />
+              <div className="lt-h2">{school.lname}</div>
+              <div className="lt-h3">
+                AT/PO-{school.place},BLOCK-{school.block},DIST-{school.dist},PIN-{school.pin}
               </div>
-            </>
-          ) : (
-            <>
-              <img
-                className="lhimg"
-                src={LETTERHEAD_DATA_URI}
-                alt="School letterhead"
-                referrerPolicy="no-referrer"
-                style={{
-                  left: mmx(8),
-                  top: mmy(3),
-                  width: mmx(633),
-                  height: mmy(197),
-                }}
+            </div>
+          </div>
+
+          {/* Purple School Contact / Codes Bar */}
+          <div className="lt-purple-bar">
+            <div className="lt-purple-cell">
+              <u>Email-{school.email}</u>
+            </div>
+            <div className="lt-purple-cell">BSE CODE-{school.bse}</div>
+            <div className="lt-purple-cell">UDISE CODE-{school.udise}</div>
+          </div>
+
+          {/* Red Letter No. & Dated Row */}
+          <div className="lt-ref-row">
+            <div className="lt-ref-field">
+              <span>Letter No. : -</span>
+              <EditableCell
+                as="span"
+                className="lt-red-line"
+                value={val('ln', '')}
+                onCommit={commit('ln')}
               />
-              <div
-                className="fn lx"
-                style={{ left: mmx(84), top: mmy(166), width: mmx(104) }}
-              >
-                <EditableCell value={val('ln', '')} onCommit={commit('ln')} />
+            </div>
+            <div className="lt-ref-field">
+              <span>Dated: -</span>
+              <EditableCell
+                as="span"
+                className="lt-red-line"
+                value={val('dt', '')}
+                onCommit={commit('dt')}
+              />
+            </div>
+          </div>
+
+          {/* Letter Body (Exact Existing Writing Preserved, Scaled to Match Screenshot) */}
+          <div className="lt-body">
+            <div>
+              <EditableCell value={val('to0', 'To')} onCommit={commit('to0')} />
+            </div>
+
+            <div style={{ marginLeft: '3mm', marginTop: '1mm' }}>
+              <div>
+                <EditableCell
+                  value={val('to1', `The District Education officer of ${district},`)}
+                  onCommit={commit('to1')}
+                />
               </div>
-              <div
-                className="fn lx"
-                style={{ left: mmx(518), top: mmy(166), width: mmx(112) }}
-              >
-                <EditableCell value={val('dt', '')} onCommit={commit('dt')} />
+              <div>
+                <EditableCell value={val('to2', `${district},Odisha.`)} onCommit={commit('to2')} />
               </div>
-            </>
-          )}
+            </div>
 
-          <div className="fn" style={boxStyle(45, 212, 300)}>
-            <EditableCell value={val('to0', 'To')} onCommit={commit('to0')} />
-          </div>
-          <div className="fn" style={boxStyle(48, 238, 520)}>
-            <EditableCell
-              value={val('to1', `The District Education officer of ${district},`)}
-              onCommit={commit('to1')}
-            />
-          </div>
-          <div className="fn" style={boxStyle(48, 265, 300)}>
-            <EditableCell value={val('to2', `${district},Odisha.`)} onCommit={commit('to2')} />
-          </div>
+            <div style={{ marginTop: '4.5mm', textAlign: 'justify' }}>
+              <EditableCell value={val('subj', legacySubj)} onCommit={commit('subj')} />{' '}
+              <span className="lt-month-slot">{mon}</span> and Year of {state.y}.
+            </div>
 
-          <div className="fl" style={boxStyle(45, 291, 613)}>
-            <EditableCell
-              value={val(
-                's1',
-                'Sub :-Submission of Monthly Claim-cum-Absentee statement of Secondary Assistant'
-              )}
-              onCommit={commit('s1')}
-            />
-          </div>
-          <div className="fl" style={boxStyle(45, 310, 613)}>
-            <EditableCell
-              value={val(
-                's2',
-                `Teachers(${groupName})of this mentioned institutions for the month of`
-              )}
-              onCommit={commit('s2')}
-            />
-          </div>
-          <div className="fn" style={boxStyle(45, 328, 613)}>
-            <b>
-              <u>&nbsp;{mon}&nbsp;</u>
-            </b>{' '}
-            and Year of {state.y}.
-          </div>
+            <div style={{ marginTop: '4.5mm' }}>
+              <EditableCell
+                value={val('hon', 'Highly Esteemed sir,')}
+                onCommit={commit('hon')}
+              />
+            </div>
 
-          <div className="fn" style={boxStyle(45, 353, 300)}>
-            <EditableCell
-              value={val('hon', 'Highly Esteemed sir,')}
-              onCommit={commit('hon')}
-            />
-          </div>
+            <div style={{ marginTop: '4mm', textAlign: 'justify', textIndent: '28mm' }}>
+              <EditableCell value={val('bodyA', legacyBodyA)} onCommit={commit('bodyA')} />{' '}
+              <span className="lt-month-slot">{mon}</span> of {state.y} .{' '}
+              <EditableCell value={val('bodyB', legacyBodyB)} onCommit={commit('bodyB')} />
+            </div>
 
-          <div className="fl" style={boxStyle(165, 379, 613)}>
-            <EditableCell
-              value={val(
-                'p1',
-                'In inviting to kind reference to the subject cited above, I the'
-              )}
-              onCommit={commit('p1')}
-            />
-          </div>
-          <div className="fl" style={boxStyle(45, 397, 613)}>
-            <EditableCell
-              value={val(
-                'p2',
-                `Headmaster of ${titleCase(school.name)} under your jurisdiction submitting the`
-              )}
-              onCommit={commit('p2')}
-            />
-          </div>
-          <div className="fl" style={boxStyle(45, 414, 613)}>
-            <EditableCell
-              value={val(
-                'p3',
-                'Monthly claim-cum- absentees statement of Secondary Assistant Teachers (PRAN'
-              )}
-              onCommit={commit('p3')}
-            />
-          </div>
-          <div className="fl" style={boxStyle(45, 432, 613)}>
-            <EditableCell
-              value={val('p4', 'STAFF) of this school for the month of')}
-              onCommit={commit('p4')}
-            />{' '}
-            <b>
-              <u>&nbsp;{mon}&nbsp;</u>
-            </b>{' '}
-            of {state.y} .
-          </div>
-
-          <div className="fl" style={boxStyle(45, 449, 613)}>
-            <EditableCell
-              value={val(
-                'p5',
-                'All the particulars provided in the given Proforma of Claim-cum- absentees'
-              )}
-              onCommit={commit('p5')}
-            />
-          </div>
-          <div className="fl" style={boxStyle(45, 467, 613)}>
-            <EditableCell
-              value={val(
-                'p6',
-                'statement of the Assistant teachers of this school are true to the best of my'
-              )}
-              onCommit={commit('p6')}
-            />
-          </div>
-          <div className="fl" style={boxStyle(45, 485, 613)}>
-            <EditableCell
-              value={val(
-                'p7',
-                'knowledge and Self-belief as per performance of the teachers for this month and'
-              )}
-              onCommit={commit('p7')}
-            />
-          </div>
-          <div className="fn" style={boxStyle(45, 502, 450)}>
-            <EditableCell
-              value={val('p8', 'official record of this school.')}
-              onCommit={commit('p8')}
-            />
-          </div>
-
-          <div className="fl" style={boxStyle(125, 530, 592)}>
-            <EditableCell
-              value={val(
-                'b3',
-                'This is Favor of your kind information and further necessary action.'
-              )}
-              onCommit={commit('b3')}
-            />
-          </div>
-
-          <div className="fn" style={boxStyle(413, 555, 560)}>
-            <EditableCell
-              value={val('yf', '\u201cYours Faithfully\u201d')}
-              onCommit={commit('yf')}
-            />
-          </div>
-
-          <div className="fn" style={boxStyle(357, 595, 613)}>
-            <EditableCell
-              value={val('sg', '(Seal & Signature Of Headmaster)')}
-              onCommit={commit('sg')}
-            />
-          </div>
-
-          <div className="fn" style={boxStyle(45, 688, 613)}>
-            <i>
+            <div style={{ marginTop: '4.5mm', textAlign: 'center' }}>
               <EditableCell
                 value={val(
-                  'nb',
-                  'N*B :- Bill-cum-Absentee Proforma of the teachers attached herewith.'
+                  'b3',
+                  'This is Favor of your kind information and further necessary action.'
                 )}
-                onCommit={commit('nb')}
+                onCommit={commit('b3')}
               />
-            </i>
+            </div>
+
+            <div style={{ marginTop: '11mm', textAlign: 'right', paddingRight: '20mm' }}>
+              <EditableCell
+                value={val('yf', '\u201cYours Faithfully\u201d')}
+                onCommit={commit('yf')}
+              />
+            </div>
+
+            <div style={{ marginTop: '14mm', textAlign: 'right', paddingRight: '3mm' }}>
+              <EditableCell
+                value={val('sg', '(Seal & Signature Of Headmaster)')}
+                onCommit={commit('sg')}
+              />
+            </div>
           </div>
 
           <div
             style={{
               position: 'absolute',
-              left: 0,
-              width: '100%',
-              top: mmy(768),
-              textAlign: 'center',
-              fontSize: '30pt',
-              lineHeight: 1,
-              fontWeight: 400,
+              left: '10.5mm',
+              right: '10.5mm',
+              bottom: '8.5mm',
+              fontSize: '11pt',
+              fontWeight: 700,
+              fontStyle: 'italic',
+              zIndex: 1,
             }}
           >
-            ⚛
+            <EditableCell
+              value={val(
+                'nb',
+                'N*B :- Bill-cum-Absentee Proforma of the teachers attached herewith.'
+              )}
+              onCommit={commit('nb')}
+            />
           </div>
 
           {school.pdev && (
             <div
               style={{
                 position: 'absolute',
-                right: '8mm',
-                bottom: '5mm',
+                right: '9mm',
+                bottom: '3.5mm',
                 fontSize: '6.5pt',
                 fontWeight: 400,
                 lineHeight: 1.2,
+                zIndex: 1,
               }}
             >
               Developed by {school.dev}, {school.devd}

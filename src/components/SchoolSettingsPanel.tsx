@@ -134,7 +134,7 @@ export const SchoolSettingsPanel: React.FC<SchoolSettingsPanelProps> = ({
           ))}
         </div>
 
-        <div className="flex flex-wrap items-center gap-6 mt-4 pt-4 border-t border-indigo-100 dark:border-slate-800">
+        <div className="flex flex-wrap items-center justify-between gap-4 mt-4 pt-4 border-t border-indigo-100 dark:border-slate-800">
           <label className="inline-flex items-center gap-2 text-xs font-medium text-slate-700 dark:text-slate-300 cursor-pointer">
             <input
               type="checkbox"
@@ -145,17 +145,9 @@ export const SchoolSettingsPanel: React.FC<SchoolSettingsPanelProps> = ({
             <span>Print developer name on sheets</span>
           </label>
 
-          <label className="inline-flex items-center gap-2 text-xs font-medium text-slate-700 dark:text-slate-300 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={Boolean(school.lhtxt)}
-              onChange={(e) => onUpdateSchool('lhtxt', e.target.checked)}
-              className="w-4 h-4 rounded border-slate-300 text-indigo-600 accent-indigo-600 focus:ring-indigo-600"
-            />
-            <span>
-              Letter: use text letterhead (follows the details above) instead of the original letterhead image
-            </span>
-          </label>
+          <span className="text-xs text-slate-500 dark:text-slate-400">
+            Covering Letter heading and code bar update automatically from these fields.
+          </span>
         </div>
       </div>
     </section>
